@@ -1,0 +1,66 @@
+---
+title: "S631 HW8"
+author: "Wencao Yang"
+date: "11/4/2016"
+output: html_document
+---
+
+#1 ALR4 problem 5.16
+
+## 5.16.1
+```{r}
+rm(list = ls())
+library(alr4)
+head(cathedral)
+Romanesque=subset(cathedral,Type=='Romanesque')
+Gothic=subset(cathedral,Type=='Gothic')
+m0=lm(Height~Length,data=Romanesque)
+m1=lm(Height~Length,data=Gothic)
+plot(Romanesque$Height~Romanesque$Length)
+abline(m0)
+plot(Height~Length,data=Gothic)
+abline(m1)
+```
+
+The Romanesque style: Height more concentrated around 75, no heavy dependence on length, 
+
+The Gothic style: Height incresae with length, the range is bigger than Romanesque style, relationship is obvious
+
+## 5.16.2
+```{r}
+summary(m0)
+summary(m1)
+```
+t test gives the P value for 2 styles, which support the visual result from graph. For m0, P value is big which means we cannot reject null hypothesis,i.e., height may be independent of length.For m1, P value is small which means we should reject null hypothesis,i.e., height dependends on length.
+
+#2 ALR4 problem 5.20
+
+## 5.20.1
+```{r}
+head(domedata)
+scatterplotMatrix(~Cond+Velocity+Angle+BallWt+BallDia+Dist,data=domedata)
+m2=lm(Dist~Cond+Velocity+Angle+BallWt+BallDia,data=domedata)
+summary(m2)
+```
+The fan does affect the ball distance.The distance can be canged by condition, velocity and balldiameter.
+
+## 5.20.2
+```{r}
+head(domedata1)
+scatterplotMatrix(~Date+Cond+Velocity+Angle+BallWt+BallDia+Dist,data=domedata1)
+m3=lm(Dist~Date+Cond+Velocity+Angle+BallWt+BallDia,data=domedata1)
+summary(m3)
+```
+The 2 experiments results are different. The date does affect the result which means the way to manipulate fans can affect the result.Distance has a bigger range on May.
+
+#3 ALR4 problem 6.6
+```{r}
+head(fuel2001)
+m3=lm(FuelC~Drivers+Income+Miles+MPC+Pop+Tax,data = fuel2001)
+summary(m3)
+```
+For the overall F test
+NH:FuelC=intercept
+AH:FuelC=intercept+Drivers+Income+Miles+MPC+Pop+Tax
+
+F test gives P value of 2.2e-16 which means we should reject NH. That means null model is not right in this case.

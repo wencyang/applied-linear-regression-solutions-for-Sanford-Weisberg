@@ -1,0 +1,55 @@
+---
+title: "S631 HW5"
+author: "Wencao Yang"
+date: "10/02/2016"
+output: html_document
+---
+
+#2 ALR4 problem 3.2
+
+##3.2.1
+```{r}
+library(alr4)
+head(UN11)
+scatterplotMatrix(~fertility+log(ppgdp)+pctUrban,data = UN11)
+```
+
+It's clear that fertility decreases with log(gdp) and pctUban and log(gdp) increases with pctUban,pctUban increases with log(gdp).
+
+##3.2.2
+```{r}
+m0=lm(fertility~log(ppgdp),data=UN11)
+m1=lm(fertility~pctUrban,data=UN11)
+summary(m0)
+summary(m1)
+```
+
+summary of m0 and m1 shows that the P value is significant small and it means we should reject the null hypothesis,i.e., slopes are zero.
+
+##3.2.3 and 3.2.4
+```{r}
+m3<-lm(fertility~log(ppgdp)+pctUrban,data=UN11)
+avPlots(m3)
+summary(m3)
+```
+
+The log(ppgdp) is still useful after adjusting for pctUrban, the pctUrban is not that useful after adjusting for log(ppgdp).
+
+It can be verified by the summary where log(ppdgp) has a nozero slope with a significant confidence level while the pctUrban has a almost zero slope.
+
+The slope of log(ppgdp) in the added variable plot is about -0.6, the slope given by the model is -0.615
+
+##3.2.5 and 3.2.6
+```{r}
+m4=lm(log(ppgdp)~pctUrban,data = UN11)
+m5=lm(fertility~pctUrban,data = UN11)
+plot(resid(m5)~resid(m4))# exactly the avplot
+m6=lm(resid(m5)~resid(m4))
+plot(resid(m3)~resid(m6))#residuals from mean function and from added variable plot
+summary(m6)
+```
+
+plot(resid(m3)~resid(m6)) gives a straight line (y=x) which means residuals in the added-variable plot are identical to the residuals from the mean function with both predictors. 
+
+summary(m3) and summary(m6) gives a slight different 
+t-value for log(ppgdp). The possible reason is that they have different degree of freedom (one is 197 and the other one is 196)

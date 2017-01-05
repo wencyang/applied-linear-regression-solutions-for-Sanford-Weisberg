@@ -1,0 +1,61 @@
+---
+title: "S631 HW2"
+author: "Wencao Yang"
+date: "September 8, 2016"
+output: pdf_document
+---
+# ALR 2.2
+```{r}
+library(alr4)
+head(UBSprices)
+plot(rice2009~rice2003,data=UBSprices,ylim=c(0,100))
+abline(0,1)
+```
+
+## ALR 2.2.1
+The points above y=x line indicate the rice price increase from 2003 to 2009 while the points below points indicate the rice price decrease from 2003 to 2009
+
+## ALR 2.2.2
+Vilnius has the largest price increase and Mumbaio has the largest price decrease based on the figure in textbook
+
+## ALR 2.2.3
+No, it doesn't suggest the price in 2009 lower than in 2003. First it varies in different cities, second, it's only the rice price
+
+## ALR 2.2.4
+```{r}
+m0<-lm(rice2009~rice2003,data = UBSprices);
+beta0=coefficients(m0)[1];
+beta1=coefficients(m0)[2];
+fittedNumber=beta0+beta1*UBSprices$rice2003
+residual=UBSprices$rice2009-beta0-beta1*UBSprices$rice2003;
+plot(residual~fittedNumber,data=UBSprices)
+abline(0,0)
+```
+First,The residual versus fittednumber indicates the failure of simple linear regression since it's not a null plot.
+Second,we have some cities far away from the rest, which may make the result not very resonable
+And there should be many factors influncing the rice2009, a single variable rice2003 is not enough to predict the rice2009 in real life
+
+# ALR 2.8
+
+## ALR 2.8.1
+$\alpha$ is the expect value using the fitting model $\beta_0$+$\beta_1x$ where $x$ is the average $\bar{x}$
+
+## ALR 2.8.2
+$(i)$ $\hat{\alpha}=\bar{y}$:
+
+Now we have $RSS=\sum(y_i-\hat{\alpha}-\hat{\beta}_1(x_i-\bar{x}))^2$
+let $\frac{\partial RSS}{\partial \hat{\alpha}}=0$ we have $\sum(y_i- \hat{\alpha}-\hat{\beta_1}(x_i-\bar{x}))=0$, i.e.,$n\bar{y}-n \hat{\alpha}-\sum(x_i-\bar{x})=0$, i.e.,$\hat{\alpha}=\bar{y}$
+
+$(ii)$ $\hat{\beta_1}=\frac{SXY}{SXX}$:
+
+let $\frac{\partial RSS}{\partial \hat{\beta_1}}=0$,
+We have $\sum (y_i-\hat{\alpha}-\hat{\beta_1}(x_i-\bar{x}))(x_i-\bar{x})$
+which leads to $x_iy_i-\sum y_i\bar{x}-\sum\bar{y}x_i+\sum\bar{x}\bar{y}-hat{\beta_1}(x_i-\bar{x})^2=0$,i.e.,$\sum x_iy_i-n\bar{x}\bar{y}=\hat{\beta_1}(x_i-\bar{x})^2$,i.e.,$\hat{\beta_1}=\frac{\sum x_iy_i-n\bar{x}\bar{y}}{\sum x_i^2-n\bar{x}^2}$,i.e., $\hat{\beta_1}=\frac{SXY}{SXX}$
+
+$(iii)$ $E(\hat{\alpha}|X)$:
+$\hat{\alpha}$ is a linear combination of $y_i$, $\hat{\alpha}=\sum \frac{1}{n}y_i=\bar{y}$
+so $E(\hat{\alpha}|X)=E(\bar{y}|X)=\alpha$
+
+$(iv)$ $E(\hat{\beta_1}|X)$:
+$\hat{\beta_1}$ is also a linear combination of $y_i$, $\hat{\beta_1}=\sum C_iy_i$, where $C_i=\frac{x_i-\bar{x}}{SXX}$, 
+$E(\hat{\beta_1}|X)=E(\sum C_iy_i|X)=\beta_1$

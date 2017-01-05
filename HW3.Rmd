@@ -1,0 +1,79 @@
+---
+title: "S631 HW3"
+author: "Wencao Yang"
+date: "September 14, 2016"
+output: html_document
+---
+# ALR 2.6
+
+## ALR 2.6.1 & 2.6.2
+```{r}
+library(alr4)
+head(ftcollinstemp)
+plot(winter~fall,data=ftcollinstemp)
+m0=lm(winter~fall,data=ftcollinstemp)
+abline(m0)
+summary(m0)
+```
+The 2-side test gives a t value of 2.049 and P vaule of 0.0428, which means we should reject the null hypothesis,i.e., the slope=0.The summary is lised below.
+
+## ALR 2.6.3
+```{r}
+SYY=sum((ftcollinstemp$winter-mean(ftcollinstemp$winter))^2)
+r2=summary(m0)$r.squared
+SSreg=r2*SYY
+```
+The winter varility explained by fall is 42.44576 which is coefficient of determination times SYY
+
+## ALR 2.6.4
+Just divide the data into 2 groups called "early" and "later" and do the same thing. It's clear that the slope becomes smaller after the year of 1989 compared with before.
+```{r}
+early<-subset(ftcollinstemp,year>1900|year<1989)
+later<-subset(ftcollinstemp,year>1989)
+m1=lm(winter~fall,data=early)
+m2=lm(winter~fall,data=later)
+plot(winter~fall,data=early)
+abline(m1)
+summary(m1)
+plot(winter~fall,data=later)
+abline(m2)
+summary(m2)
+```
+
+# ALR 2.16
+
+## ALR 2.16.1-2.16.4
+```{r}
+head(UN11)
+plot(log(fertility)~log(ppgdp),data=UN11)
+m3=lm(log(fertility)~log(ppgdp),data=UN11)
+abline(m3)
+summary(m3)
+summary(m3)$r.squared
+```
+The summary gives the 2-side test result and the P value of 1-side result is just half of that in the 2-side test and it's close to zero.the significant level is more than 0.9999... that's to say we are pretty sure the fertility decreases with the ppgdp
+the coefficient of determination means how much sum of square due to the regression, here it's 0.5259.
+
+## ALR 2.16.5
+```{r}
+new <- data.frame(ppgdp = 1000)
+predict(m3,new,interval="confidence",level=0.95)
+```
+the 95% CI is (1.173808,1.295327)
+So the 95% CI for fertility is (exp(1.173808),exp(1.295327))=(3.2342,3.65219)
+```{r}
+exp(1.173808)
+exp(1.295327)
+```
+
+## ALR 2.16.6
+```{r}
+subset(UN11,UN11$fertility==max(UN11$fertility))
+subset(UN11,UN11$fertility==min(UN11$fertility))
+r=residuals(m3)
+sort(r)
+```
+sort(r) gives the localities of largest 2 positive residual:
+Angola , Equatorial Guinea 
+the localities of largest 2 negative residual:
+Bosnia and Herzegovina, Moldova

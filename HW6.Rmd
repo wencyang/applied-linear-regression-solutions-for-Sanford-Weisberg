@@ -1,0 +1,106 @@
+---
+title: "S631 HW6"
+author: "Wencao Yang"
+date: "10/14/2016"
+output: html_document
+---
+
+#1 ALR4 problem 3.6
+
+##3.6.1 and 3.6.2
+```{r}
+library(alr4)
+head(water)
+scatterplotMatrix(~BSAAM+OPBPC+OPRC+OPSLAKE,data = water)
+m0=lm(BSAAM~OPBPC+OPRC+OPSLAKE,data = water)
+summary(m0)
+cor(water)
+```
+The correlation matrix shows that correlation between BSAAM,OPBPCC,OPRC,OPSLAKE are big and positive, which is indicated by the scatterplot Matrix
+
+t value of OPBPC is close to zero, which means OPBPC slope is very possible to be zero, t value of OPRC and OPSLAKE is big and lead to a small P value which means slope of OPRC and OPSLAKE is not zero
+
+#2 
+
+## a)
+```{r}
+x0<-rep(1,length(water$OPBPC))
+x1<-c(water$OPBPC)
+x2<-c(water$OPRC)
+x3<-c(water$OPSLAKE)
+X=cbind(x0,x1, x2, x3)
+inv=solve(t(X)%*%X)
+H=X%*%inv%*%t(X)
+
+```
+
+## b)
+```{r}
+qr(inv)$rank
+qr(H)$rank
+```
+It's clear that rank of inv is 4.
+H is symmetric and idempotent so rank(H) is tr(H)=p+1, p=3, so rank(H)=4 
+
+## c)
+```{r}
+Y<-c(water$BSAAM)
+betaMatrix=inv%*%t(X)%*%Y
+RSS=8304^2*39
+n=length(water$OPRC)
+p=3
+variance=RSS/(n-p-1)
+se_beta_1=sqrt(variance*inv[1,1])
+se_beta_2=sqrt(variance*inv[2,2])
+se_beta_3=sqrt(variance*inv[3,3])
+se_beta_4=sqrt(variance*inv[4,4])
+se_beta_1
+se_beta_2
+se_beta_3
+se_beta_4
+```
+ 
+## d)
+```{r}
+SSY=sum((Y-mean(Y))^2)
+SSreg=SSY-RSS
+RSS
+SSY
+SSreg
+anova(m0)
+```
+The RSS is the same with the result in anova(m0)
+
+#3 ALR4 problem 4.2
+```{r}
+head(Transact)
+a=(Transact$t1+Transact$t2)/2
+d=(Transact$t1-Transact$t2)
+m1=lm(time~t1+t2,data=Transact)
+m2=lm(time~a+d,data=Transact)
+m3=lm(time~t2+d,data=Transact)
+m4=lm(time~t1+t2+a+d,data=Transact)
+summary(m1)
+summary(m2)
+summary(m3)
+summary(m4)
+```
+
+## 4.2.1
+coeff of a and d are NA in M4. That's because a and d are linear combination of t1 and t2
+
+## 4.2.2
+The intercept and standard error are the same for all models
+t1 in M1 and M4 are the same with d in M3
+d in M2 and d in M3 are different
+
+## 4.2.3
+M1
+             Estimate Std. Error t value Pr(>|t|)    
+t2            2.03455    0.09434  21.567   <2e-16 ***
+
+M3
+            Estimate Std. Error t value Pr(>|t|)    
+t2            7.4966     0.3654  20.514   <2e-16 ***
+
+They are different because the other regressor is t1 and t1-t2,respectively. The correlation between t1 and t2 is different with the correlation between t1-t2 and t2

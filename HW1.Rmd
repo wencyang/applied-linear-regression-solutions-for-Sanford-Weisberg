@@ -1,0 +1,60 @@
+---
+title: "S631 HW1"
+author: "Wencao Yang"
+date: "September 4, 2016"
+output: html_document
+---
+
+
+## ALR 1.1
+```{r}
+library(alr3)
+rm(list=ls())
+meanLength <- with(wblake, tapply(Length, Age, mean))
+varLength <- with(wblake, tapply(Length, Age, var))
+meanLength
+varLength
+plot(1:8, meanLength)
+```
+
+exactly the dashed line in fig 1.5 in ALR book
+```{r}
+plot(1:8, sqrt(varLength))
+```
+
+no pattern can be found in the standard deviation plot
+
+## ALR 1.2
+
+##1.2.1
+Here is the summary of temperature vs month
+```{r}
+head(Mitchell)
+summary(Mitchell)
+##and here is the intercept and slope
+m0<-lm(Temp~Month,data=Mitchell)
+print(coef(m0))
+
+plot(Temp~Month,data=Mitchell)
+abline(m0)
+```
+
+It's clear that the temperature has an average around 10 C and it increases slowly with month
+
+##1.2.2
+I don't know how to strech the x axis now so I think the an easy way to do this is to only draw 1/4 of the x axis, it's clear we can see a sin curve on this graph,indicatig the flutuation of temperature with month, and the statistics results are the same with 1.2.1 
+```{r}
+plot(Temp~Month,data=Mitchell,xlim=c(0,50))
+```
+
+
+## ALR 1.4
+```{r}
+head(oldfaith)
+plot(Interval~Duration,data=oldfaith)
+m1<-lm(Interval~Duration,data=oldfaith)
+print(coef(m1))
+abline(m1)
+```
+
+$Interval=0.17686*Duration+33.98781$

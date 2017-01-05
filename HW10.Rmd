@@ -1,0 +1,118 @@
+---
+title: "S631 HW10"
+author: "Wencao Yang"
+date: "12/6/2016"
+
+---
+
+#1 ALR4 problem 7.4 
+```{r warning=FALSE,message=FALSE}
+rm(list=ls())
+library(alr4)
+head(salarygov)
+```
+
+##7.4.1
+changing the unit of analysis to the employee rather than the job class would suggest using wls because difference employee from different class has different weight for variance due to the class size. the weight should be 1/size of class
+
+##7.4.2
+```{r warning=FALSE,message=FALSE}
+library(splines)
+salarygov$FD=round(salarygov$NW/salarygov$NE-0.2)
+head(salarygov)
+scatterplotMatrix(salarygov)
+m=lm(MaxSalary~bs(Score,df=3)+FD+FD:bs(Score,df=3),data=salarygov,weights = 1/NE)
+summary(m)
+Salarywomen<-subset(salarygov,FD=="1")
+Salarymen<-subset(salarygov,FD=="0")
+t.test(Salarymen$MaxSalary,Salarywomen$MaxSalary)
+```
+Add a regressor FD, which is 1 if female-dominated and 0 if not. m is a whole model with regressor FD and Score and interaction of them.
+95 confidence interval for difference between female-dominated class and others is [3305.743,2355.87]
+
+#2 ALR4 problem 7.6
+
+## 7.6.1
+```{r warning=FALSE,message=FALSE}
+scatterplot(Distance~Speed,data=stopping)
+```
+The plot shows a quadratic relationship between distance and speed
+
+## 7.6.2
+```{r warning=FALSE,message=FALSE}
+m0=lm(Distance~Speed+I(Speed^2),data=stopping)
+summary(m0)
+m1=lm(Distance~Speed+I(Speed^2),data=stopping,weights = 1/Speed)
+m2=lm(Distance~Speed+I(Speed^2),data=stopping,weights = 1/(Speed^2))
+ncvTest(m0)
+ncvTest(m1)
+ncvTest(m2)
+```
+
+Adding speed^2 is not helpful
+
+## 7.6.3
+```{r warning=FALSE,message=FALSE}
+m1=lm(Distance~Speed+I(Speed^2),data=stopping,weights = 1/Speed)
+summary(m1)
+```
+
+model with weight=1/speed is better with a bigger t value. the slope for I(speed^2) is smaller with weight=1/speed than without weight.
+
+## 7.6.4
+```{r warning=FALSE,message=FALSE}
+hccm(m0, type="hc3")
+sqrt(diag(hccm(m0, type="hc3")))
+```
+
+## 7.6.5
+```{r warning=FALSE,message=FALSE}
+library(boot)
+# function to obtain regression weights 
+bs <- function(formula, data, indices) {
+  d <- data[indices,] # allows boot to select sample 
+  fit <- lm(formula, data=d)
+  return(coef(fit)) 
+} 
+# bootstrapping with 1000 replications 
+results <- boot(data=stopping, statistic=bs, 
+  	R=1000, formula=Distance~Speed+I(Speed^2))
+results
+```
+
+#3 ALR4 problem 8.2 
+
+## 8.2.1
+```{r warning=FALSE,message=FALSE}
+scatterplot(sqrt(Distance)~Speed,data=stopping)
+```
+Sqrt(Distance) is a good transformation
+
+## 8.2.2
+```{r warning=FALSE,message=FALSE}
+Speed1<-stopping$Speed^(-1)
+Speed2<-stopping$Speed^(0)
+Speed3<-stopping$Speed^(1)
+scatterplot(Distance~Speed1,data=stopping)
+scatterplot(Distance~Speed2,data=stopping)
+scatterplot(Distance~Speed3,data=stopping)
+```
+
+none of these transformations is adequate.
+
+## 8.2.3
+```{r warning=FALSE,message=FALSE}
+summary(m1)
+```
+
+See 7.6.3
+
+## 8.2.4
+```{r warning=FALSE,message=FALSE}
+scatterplot(Distance~Speed,data=stopping)
+lines(stopping$Speed,fitted(m1))
+m3=lm(sqrt(Distance)~Speed,data = stopping)
+lines(stopping$Speed,(stopping$Speed)^2*(m3$coefficients[2])^2,col='blue')
+```
+
+The first model does better

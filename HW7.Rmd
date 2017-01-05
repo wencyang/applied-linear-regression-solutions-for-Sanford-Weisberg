@@ -1,0 +1,45 @@
+---
+title: "S631 HW7"
+author: "Wencao Yang"
+date: "10/21/2016"
+output: html_document
+---
+
+#1 ALR4 problem 4.5
+The regression coefficient is the percentage change in Y.If use log(Y) as response, the coefficient will be responding to a percentage change of log(Y) and then the exponential change of Y 
+
+#2 ALR4 problem 4.6
+```{r}
+library(alr4)
+head(UN11)
+m0=lm(log(fertility)~pctUrban,data=UN11)
+plot(log(fertility)~pctUrban,data = UN11)
+abline(m0)
+```
+
+intercept of 1.501 means the log(fertility) when percentage of Urban is 0 and slope of 0.01 means that every 1 percentage increase of Urban rate decrease log(fertility) by 0.01.
+
+#3 ALR4 problem 4.9
+
+## 4.9.1
+intercept of 24697 is the estimated salary for male and slope of 3340 is the part of salary female faculty earn less than male faculty.
+
+## 4.9.2
+Because sex and years are not completely independent or dependent.
+
+#4 ALR4 problem 5.17.1 to 5.17.3
+```{r}
+head(salary)
+scatterplotMatrix(~salary+degree+rank+sex+year+ysdeg,data = salary)
+m1=lm(salary~degree+rank+sex+year+ysdeg,data = salary)
+summary(m1)
+salarymen<-subset(salary,sex=='Male')
+salarywomen<-subset(salary,sex=='Female')
+t.test(salarymen$salary,salarywomen$salary)
+```
+
+salary increases with rank and year, almost independent of degree, slight difference for different sex
+
+We cannot reject the null hypothesis,i.e., the salary for men and women is the same.Alternative hypothesis is mean salary for men and women is different.
+
+Finally, the 95% confidence interval for the difference of salary for men and women is (-567.8539,7247.1471)
