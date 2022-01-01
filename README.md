@@ -11,12 +11,12 @@ HW3-chapter 2, problems 2.6, 2.16
 
 HW5-chapter 3, problems 3.2
 
-HW6-chapter 3,4, problems 3.6, 4.2
+HW6-chapter 3, 4, problems 3.6, 4.2
 
 HW7-chapter 4, problems 4.5, 4.6, 4.9
 
-HW8-chapter 5,6, problems 5.16, 5.20, 6.6
+HW8-chapter 5, 6, problems 5.16, 5.20, 6.6
 
 HW9-chapter 6, problems 6.4
 
-HW10-chapter 7,8 problems 7.4, 7.6, 8.2
+HW10-chapter 7, 8 problems 7.4, 7.6, 8.2
