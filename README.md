@@ -1,5 +1,5 @@
 # Applied-linear-regression-solution-for-Sanford-Weisberg-texbook
-Soutions for homeworks from Sanford Weisberg book Applied linear regression 4th edition:
+Soutions for Sanford Weisberg book Applied linear regression 4th edition:
 
 https://www.amazon.com/Applied-Linear-Regression-Sanford-Weisberg/dp/1118386086/ref=pd_sbs_14_img_0?_encoding=UTF8&psc=1&refRID=ZYT31650X0MX4YYBMDQ1
 
