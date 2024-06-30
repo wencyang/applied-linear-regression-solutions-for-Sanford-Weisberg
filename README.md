@@ -1,7 +1,9 @@
 # Applied-linear-regression-solution-for-Sanford-Weisberg
-Soutions for Sanford Weisberg book Applied linear regression 4th edition:
+This repo is a collection of my own soutions for Sanford Weisberg's book _Applied_ _linear_ _regression_ 4th edition using R:
 
 https://www.amazon.com/Applied-Linear-Regression-Sanford-Weisberg/dp/1118386086/ref=pd_sbs_14_img_0?_encoding=UTF8&psc=1&refRID=ZYT31650X0MX4YYBMDQ1
+
+List of problems:
 
 HW1-chapter 1, problems 1.1, 1.2, 1.4
 
